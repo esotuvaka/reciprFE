@@ -1,0 +1,24 @@
+{
+	"name": "Chicken Alfredo FROM FRONTEND",
+	"description": "38g protein. That's crazy!",
+	"duration": "60",
+	"tags": [
+        "Dinner", 
+        "High Protein", 
+        "Chicken"
+    ],
+	"ingredients": [
+		"chicken",
+		"pasta",
+		"garlic paste",
+		"skimmed milk",
+		"mozarella",
+		"parsley"
+	],
+	"seasoning": [
+        "garlic powder", 
+        "paprika", 
+        "salt", 
+        "black pepper"
+    ]
+}
