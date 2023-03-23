@@ -75,6 +75,7 @@ function App() {
 			.then((response) => {
 				setRecipe(response.data);
 				console.log("getRecipe CALLED!");
+				console.log(recipe);
 			})
 			.catch((error) => console.log(error));
 	}
@@ -97,15 +98,16 @@ function App() {
 				},
 			})
 			.then((response) => {
-				setRecipe(response.data);
-				console.log("Successfully updated recipe: ");
-				console.log(response.data);
+				console.log("Successfully updated recipe: " + response.status);
+				console.log(response);
+
+				// Modifying state here via these functions forces a rerender
+				//	so recipe Data is always synchronized
+				getRecipe(id);
+				clear();
+				handleHideModal();
 			})
 			.catch((error) => console.log(error));
-
-		getRecipe(id);
-		clear();
-		handleHideModal();
 	}
 
 	// Delete
