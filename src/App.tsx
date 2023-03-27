@@ -1,21 +1,15 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
+import ChickenPhoto from "./assets/IMG_5591.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark, faHeart } from "@fortawesome/free-solid-svg-icons";
+import { Header } from "./components/ui/Header";
+import { IRecipe, IReceivedRecipe } from "./Types";
+import { CreateRecipe } from "./sections/CreateRecipe";
 
 function App() {
-	interface IRecipe {
-		id: string;
-		name: string;
-		description: string;
-		duration: string;
-		tags: Array<string>;
-		ingredients: Array<string>;
-		seasoning: Array<string>;
-	}
-
-	const [recipe, setRecipe] = useState<IRecipe | null>();
+	const [recipe, setRecipe] = useState<IReceivedRecipe | null>();
 
 	const [showEditModal, setShowEditModal] = useState<boolean>(false);
 	const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
@@ -23,7 +17,6 @@ function App() {
 	const [editName, setEditName] = useState<string>("");
 	const [editDuration, setEditDuration] = useState<string>("");
 	const [editDescription, setEditDescription] = useState<string>("");
-
 	const [editTags, setEditTags] = useState<Array<string>>([""]);
 	const [editIngredients, setEditIngredients] = useState<Array<string>>([""]);
 	const [editSeasoning, setEditSeasoning] = useState<Array<string>>([""]);
@@ -71,9 +64,9 @@ function App() {
 	const handleHideConfirmModal = () => setShowConfirmModal(false);
 
 	// Create
-	function sendRecipe() {
+	function sendRecipe(createRecipeData: IRecipe) {
 		axios
-			.post(BACKEND, TEST_RECIPE)
+			.post(BACKEND, createRecipeData)
 			.then((response) => {
 				setRecipe(response.data);
 				console.log(response.data);
@@ -151,6 +144,10 @@ function App() {
 		}
 	}
 
+	function handleRecipeSubmit(data: IRecipe) {
+		sendRecipe(data);
+	}
+
 	function clear() {
 		setEditName("");
 		setEditDuration("");
@@ -158,37 +155,14 @@ function App() {
 	}
 
 	return (
-		<div className="h-screen w-screen bg-black text-white">
+		<div className="h-screen w-screen bg-neutral-900 text-white">
 			<div className="">
-				<header className="fixed top-0 w-full border-y border-neutral-400">
-					<div className="mx-auto flex h-20 w-3/5 items-center justify-between">
-						<a href="/">
-							<h1 className="text-4xl font-bold">reciPR</h1>
-						</a>
-						<input
-							placeholder="Search or filter by..."
-							className="flex h-10 w-[600px] items-center rounded-xl border border-neutral-400 bg-black px-4 transition-all duration-300 hover:border-white"
-						/>
-						<div />
-					</div>
-				</header>
+				<Header />
 				<section className="w-screeen flex h-screen flex-col items-center justify-center">
 					{recipe ? (
 						<></>
 					) : (
-						<div className="mb-4 flex gap-4">
-							<div className="">
-								<button
-									className="rounded-md border border-neutral-400 px-4 py-2 font-bold transition-all duration-300 hover:border-white"
-									onClick={() => sendRecipe()}
-								>
-									+ CREATE A RECIPE
-								</button>
-							</div>
-							{/* <div className="border-white border px-4 py-2 font-bold rounded-md">
-							<button onClick={() => getRecipe(recipeID)}>GET A RECIPE</button>
-						</div> */}
-						</div>
+						<CreateRecipe createRecipeForm={handleRecipeSubmit} />
 					)}
 					<div className="">
 						{recipe ? (
@@ -197,7 +171,9 @@ function App() {
 
 								<div className="grid grid-cols-2 grid-rows-2">
 									<div>
-										<div className="h-96 w-96 bg-red-500" />
+										<div className="h-96 w-96 pl-6">
+											<img src={ChickenPhoto} />
+										</div>
 									</div>
 									<div className="row-span-2 w-96 px-6">
 										<h2 className="text-2xl font-bold">{recipe.name}</h2>
@@ -382,13 +358,17 @@ function App() {
 								</div>
 								<div className="mx-auto flex gap-4">
 									<div className="">
-										<button
-											className="mx-auto mt-4 mb-6 w-min whitespace-nowrap rounded-md border border-neutral-400 px-4 py-2 font-bold transition-all duration-300 hover:border-blue-500"
-											type="button"
-											onClick={() => updateRecipe(recipe!.id)}
-										>
-											Save Changes
-										</button>
+										{recipe ? (
+											<button
+												className="mx-auto mt-4 mb-6 w-min whitespace-nowrap rounded-md border border-neutral-400 px-4 py-2 font-bold transition-all duration-300 hover:border-blue-500"
+												type="button"
+												onClick={() => updateRecipe(recipe.id)}
+											>
+												Save Changes
+											</button>
+										) : (
+											<></>
+										)}
 									</div>
 									<div className="">
 										<button
@@ -415,16 +395,21 @@ function App() {
 								</p>
 								<p>(Deleting can't be undone!)</p>
 								<div className="mx-auto flex gap-4">
-									<button
-										className="mt-4 mb-6 w-min whitespace-nowrap rounded-md border border-neutral-400 px-4 py-2 font-bold transition-all duration-300 hover:border-blue-500"
-										type="button"
-										onClick={() => {
-											handleHideConfirmModal();
-											deleteRecipe(recipe!.id);
-										}}
-									>
-										Confirm
-									</button>
+									{recipe ? (
+										<button
+											className="mt-4 mb-6 w-min whitespace-nowrap rounded-md border border-neutral-400 px-4 py-2 font-bold transition-all duration-300 hover:border-blue-500"
+											type="button"
+											onClick={() => {
+												handleHideConfirmModal();
+												deleteRecipe(recipe.id);
+											}}
+										>
+											Confirm
+										</button>
+									) : (
+										<></>
+									)}
+
 									<button
 										className="mt-4 mb-6 w-min whitespace-nowrap rounded-md border border-neutral-400 px-4 py-2 font-bold transition-all duration-300 hover:border-red-500"
 										type="button"
