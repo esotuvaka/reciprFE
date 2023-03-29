@@ -152,6 +152,9 @@ function App() {
 		setEditName("");
 		setEditDuration("");
 		setEditDescription("");
+		setEditTags([""]);
+		setEditIngredients([""]);
+		setEditSeasoning([""]);
 	}
 
 	return (
