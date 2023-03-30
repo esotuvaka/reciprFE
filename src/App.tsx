@@ -5,12 +5,15 @@ import ChickenPhoto from "./assets/IMG_5591.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { Header } from "./components/ui/Header";
-import { IRecipe, IReceivedRecipe } from "./Types";
+import { IRecipe, IReceivedRecipe, IExploreRecipes } from "./Types";
 import { CreateRecipe } from "./sections/CreateRecipe";
 import { Explore } from "./sections/Explore";
 
 function App() {
-	const [exploreRecipes, setExploreRecipes] = useState<IReceivedRecipe[]>();
+	const [exploreRecipes, setExploreRecipes] = useState<IExploreRecipes | "">(
+		""
+	);
+	const [loading, setLoading] = useState<boolean>(true);
 
 	const [recipe, setRecipe] = useState<IReceivedRecipe | null>();
 
@@ -40,13 +43,20 @@ function App() {
 	}, [recipe]);
 
 	useEffect(() => {
-		axios
-			.get(`${BACKEND}/explore`)
-			.then((response) => {
-				setExploreRecipes(response.data);
-			})
-			.catch((error) => console.log(error));
+		fetchRecipes();
 	}, []);
+
+	async function fetchRecipes() {
+		try {
+			const response = await axios.get(`${BACKEND}/explore`);
+			const data = response.data;
+			setExploreRecipes(data.value);
+			console.log(data.value);
+			setLoading(false);
+		} catch (error) {
+			console.error(error);
+		}
+	}
 
 	const handleShowEditModal = () => setShowEditModal(true);
 	const handleHideEditModal = () => setShowEditModal(false);
@@ -71,8 +81,6 @@ function App() {
 			.get(`${BACKEND}/${id}`)
 			.then((response) => {
 				setRecipe(response.data);
-				console.log("getRecipe CALLED!");
-				console.log(recipe);
 			})
 			.catch((error) => console.log(error));
 	}
@@ -153,12 +161,19 @@ function App() {
 			<div className="">
 				<Header />
 				<section className="w-screeen flex h-screen flex-col items-center justify-center">
-					{recipe ? (
+					{loading ? (
 						<></>
 					) : (
-						<Explore />
-						// <CreateRecipe createRecipeForm={handleRecipeSubmit} />
+						<>
+							{exploreRecipes !== "" ? (
+								<Explore exploreRecipes={exploreRecipes} />
+							) : (
+								<></>
+								// <CreateRecipe createRecipeForm={handleRecipeSubmit} />
+							)}
+						</>
 					)}
+
 					<div className="">
 						{recipe ? (
 							<div className="rounded-md border border-white py-4 px-6">

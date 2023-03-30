@@ -10,3 +10,10 @@ export interface IRecipe {
 export interface IReceivedRecipe extends IRecipe {
 	id: string;
 }
+
+export interface IExploreRecipes {
+	contentType: null;
+	serializerSettings: null;
+	statusCode: null;
+	value: IReceivedRecipe[];
+}
