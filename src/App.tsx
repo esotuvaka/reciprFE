@@ -7,8 +7,11 @@ import { faBookmark, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { Header } from "./components/ui/Header";
 import { IRecipe, IReceivedRecipe } from "./Types";
 import { CreateRecipe } from "./sections/CreateRecipe";
+import { Explore } from "./sections/Explore";
 
 function App() {
+	const [exploreRecipes, setExploreRecipes] = useState<IReceivedRecipe[]>();
+
 	const [recipe, setRecipe] = useState<IReceivedRecipe | null>();
 
 	const [showEditModal, setShowEditModal] = useState<boolean>(false);
@@ -20,6 +23,8 @@ function App() {
 	const [editTags, setEditTags] = useState<Array<string>>([""]);
 	const [editIngredients, setEditIngredients] = useState<Array<string>>([""]);
 	const [editSeasoning, setEditSeasoning] = useState<Array<string>>([""]);
+
+	const BACKEND = import.meta.env.VITE_BACKEND_URL;
 
 	// Whenever the recipe changes and isn't null,
 	//	set the editModal placeholders to the recipe data
@@ -34,28 +39,14 @@ function App() {
 		}
 	}, [recipe]);
 
-	const BACKEND = "http://localhost:5223/meals";
-	const TEST_RECIPE = {
-		"name": "Sticky Honey Lemon Chicken",
-		"description": "320 cals, 31g protein",
-		"duration": "20",
-		"tags": ["Lunch", "High Protein", "Chicken", "Pan Fried"],
-		"ingredients": [
-			"600g chicken",
-			"1Tbsp garlic powder",
-			"1Tbsp cumin",
-			"2Tbsp oregano",
-			"1 lemon",
-			"1Tbsp olive oil",
-			"30g butter",
-			"1Tbsp garlic",
-			"70ml soy sauce",
-			"15g honey",
-			"Pinch of parsley",
-			"200g rice",
-		],
-		"seasoning": ["garlic powder", "cumin", "oregano", "cilantro"],
-	};
+	useEffect(() => {
+		axios
+			.get(`${BACKEND}/explore`)
+			.then((response) => {
+				setExploreRecipes(response.data);
+			})
+			.catch((error) => console.log(error));
+	}, []);
 
 	const handleShowEditModal = () => setShowEditModal(true);
 	const handleHideEditModal = () => setShowEditModal(false);
@@ -66,7 +57,7 @@ function App() {
 	// Create
 	function sendRecipe(createRecipeData: IRecipe) {
 		axios
-			.post(BACKEND, createRecipeData)
+			.post(`${BACKEND}`, createRecipeData)
 			.then((response) => {
 				setRecipe(response.data);
 				console.log(response.data);
@@ -165,7 +156,8 @@ function App() {
 					{recipe ? (
 						<></>
 					) : (
-						<CreateRecipe createRecipeForm={handleRecipeSubmit} />
+						<Explore />
+						// <CreateRecipe createRecipeForm={handleRecipeSubmit} />
 					)}
 					<div className="">
 						{recipe ? (
@@ -194,7 +186,7 @@ function App() {
 												</li>
 											))}
 										</ul>
-										<div className="ml-2 flex flex-col gap-2">
+										{/* <div className="ml-2 flex flex-col gap-2">
 											<p className="align-middle">
 												<FontAwesomeIcon
 													icon={faHeart}
@@ -209,9 +201,13 @@ function App() {
 												/>
 												321
 											</p>
-										</div>
+										</div> */}
 										<h4 className="text-lg font-bold">Instructions:</h4>
-										<p className="whitespace-wrap">1.</p>
+										<p className="whitespace-wrap">1. Organize ingredients</p>
+										<p className="whitespace-wrap">2. Prepare ingredients</p>
+										<p className="whitespace-wrap">3. Mix seasonings</p>
+										<p className="whitespace-wrap">4. Cook food</p>
+										<p className="whitespace-wrap">5. Eat!</p>
 									</div>
 
 									<div className="flex gap-8 p-6">
