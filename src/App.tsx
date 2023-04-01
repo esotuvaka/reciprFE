@@ -21,7 +21,7 @@ function App() {
 	const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
 
 	const [editName, setEditName] = useState<string>("");
-	const [editDuration, setEditDuration] = useState<string>("");
+	const [editDuration, setEditDuration] = useState<number>(0);
 	const [editDescription, setEditDescription] = useState<string>("");
 	const [editTags, setEditTags] = useState<Array<string>>([""]);
 	const [editIngredients, setEditIngredients] = useState<Array<string>>([""]);
@@ -149,7 +149,7 @@ function App() {
 
 	function clear() {
 		setEditName("");
-		setEditDuration("");
+		setEditDuration(0);
 		setEditDescription("");
 		setEditTags([""]);
 		setEditIngredients([""]);
@@ -291,7 +291,7 @@ function App() {
 										name="editName"
 										id="editName"
 										value={editDuration}
-										onChange={(e) => setEditDuration(e.target.value)}
+										onChange={(e) => setEditDuration(parseInt(e.target.value))}
 										className="w-96 rounded-md border border-neutral-400 bg-black px-2"
 										placeholder={`${recipe!.duration}`}
 									/>

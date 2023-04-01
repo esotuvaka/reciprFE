@@ -8,7 +8,7 @@ interface ICreateRecipe {
 
 export function CreateRecipe({ createRecipeForm }: ICreateRecipe) {
 	const [name, setName] = useState<string>("");
-	const [duration, setDuration] = useState<string>("");
+	const [duration, setDuration] = useState<number>(0);
 	const [description, setDescription] = useState<string>("");
 	const [tags, setTags] = useState<Array<string>>([""]);
 	const [ingredients, setIngredients] = useState<Array<string>>([""]);
@@ -80,7 +80,7 @@ export function CreateRecipe({ createRecipeForm }: ICreateRecipe) {
 						name="editName"
 						id="editName"
 						value={duration}
-						onChange={(e) => setDuration(e.target.value)}
+						onChange={(e) => setDuration(parseInt(e.target.value))}
 						className="w-96 rounded-md border border-neutral-400 bg-black  px-2"
 						placeholder={`15, 30, 60, etc`}
 					/>

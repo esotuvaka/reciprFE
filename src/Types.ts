@@ -1,7 +1,7 @@
 export interface IRecipe {
 	name: string;
 	description: string;
-	duration: string;
+	duration: number;
 	tags: Array<string>;
 	ingredients: Array<string>;
 	seasoning: Array<string>;
