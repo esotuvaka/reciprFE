@@ -43,8 +43,9 @@ export function CreateRecipe({ createRecipeForm }: ICreateRecipe) {
 		}
 	}
 
+	// TO DO: once auth is implemented, have spam protections like one new recipe submission every 10mins
 	return (
-		<div className="mb-4 flex flex-col gap-4 rounded-lg bg-black px-6 py-4">
+		<div className="mb-4 mt-12 flex flex-col gap-4 border border-white bg-neutral-900 px-6 py-4">
 			<form>
 				<h2 className="text-2xl font-bold underline underline-offset-2">
 					CREATE A RECIPE
@@ -76,7 +77,7 @@ export function CreateRecipe({ createRecipeForm }: ICreateRecipe) {
 				<div className="flex flex-col  py-2 px-6">
 					<label>Time to prepare (in minutes)</label>
 					<input
-						type="text"
+						type="number"
 						name="editName"
 						id="editName"
 						value={duration}
@@ -111,7 +112,7 @@ export function CreateRecipe({ createRecipeForm }: ICreateRecipe) {
 							Ingredients <span className="text-xl text-red-500">* </span>
 						</label>
 						<textarea
-							rows={8}
+							rows={6}
 							name="editIngredients"
 							id="editIngredients"
 							value={ingredients.join(", ")}
