@@ -17,3 +17,5 @@ export interface IExploreRecipes {
 	statusCode: null;
 	value: IReceivedRecipe[];
 }
+
+export type TPageState = "explore" | "create" | "edit";

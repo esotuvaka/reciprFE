@@ -5,7 +5,7 @@ import ChickenPhoto from "./assets/IMG_5591.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { Header } from "./components/ui/Header";
-import { IRecipe, IReceivedRecipe, IExploreRecipes } from "./Types";
+import { IRecipe, IReceivedRecipe, IExploreRecipes, TPageState } from "./Types";
 import { CreateRecipe } from "./sections/CreateRecipe";
 import { Explore } from "./sections/Explore";
 
@@ -14,6 +14,8 @@ function App() {
 		""
 	);
 	const [loading, setLoading] = useState<boolean>(true);
+
+	const [activePage, setActivePage] = useState<TPageState>("explore");
 
 	const [recipe, setRecipe] = useState<IReceivedRecipe | null>();
 
@@ -147,6 +149,21 @@ function App() {
 		sendRecipe(data);
 	}
 
+	let content;
+
+	if (activePage === "explore" && exploreRecipes !== "") {
+		content = <Explore exploreRecipes={exploreRecipes} />;
+	} else if (activePage === "create") {
+		content = <CreateRecipe createRecipeForm={handleRecipeSubmit} />;
+	}
+	// else if (activePage === "edit") {
+	// 	content = <EditPage />;
+	// }
+
+	function handleChangePage(pageName: TPageState) {
+		setActivePage(pageName);
+	}
+
 	function clear() {
 		setEditName("");
 		setEditDuration(0);
@@ -159,20 +176,9 @@ function App() {
 	return (
 		<div className="h-screen w-screen bg-neutral-900 text-white">
 			<div className="">
-				<Header />
+				<Header changePage={(pageName) => handleChangePage(pageName)} />
 				<section className="w-screeen flex h-screen flex-col items-center justify-center">
-					{loading ? (
-						<></>
-					) : (
-						<>
-							{exploreRecipes !== "" ? (
-								<Explore exploreRecipes={exploreRecipes} />
-							) : (
-								<></>
-								// <CreateRecipe createRecipeForm={handleRecipeSubmit} />
-							)}
-						</>
-					)}
+					{loading ? <></> : <>{content}</>}
 
 					<div className="">
 						{recipe ? (
@@ -201,22 +207,6 @@ function App() {
 												</li>
 											))}
 										</ul>
-										{/* <div className="ml-2 flex flex-col gap-2">
-											<p className="align-middle">
-												<FontAwesomeIcon
-													icon={faHeart}
-													className="mr-1 h-5 w-5 text-red-500"
-												/>
-												1,234
-											</p>
-											<p className="align-middle">
-												<FontAwesomeIcon
-													icon={faBookmark}
-													className="mr-1 h-5 w-5 text-neutral-300"
-												/>
-												321
-											</p>
-										</div> */}
 										<h4 className="text-lg font-bold">Instructions:</h4>
 										<p className="whitespace-wrap">1. Organize ingredients</p>
 										<p className="whitespace-wrap">2. Prepare ingredients</p>

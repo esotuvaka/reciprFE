@@ -7,10 +7,10 @@ interface IExplore {
 export function Explore({ exploreRecipes }: IExplore) {
 	return (
 		<>
-			<h2 className="mx-auto mb-4 flex w-4/5 text-3xl font-semibold">
+			<h2 className="mx-auto mb-4 flex w-3/5 text-3xl font-semibold">
 				Explore
 			</h2>
-			<div className="mx-auto grid w-4/5 grid-cols-3 grid-rows-3 gap-4">
+			<div className="mx-auto grid w-3/5 grid-cols-3 grid-rows-3 gap-4">
 				{exploreRecipes ? (
 					exploreRecipes.value.map((recipe, i) => (
 						<div
