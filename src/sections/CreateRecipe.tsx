@@ -45,7 +45,7 @@ export function CreateRecipe({ createRecipeForm }: ICreateRecipe) {
 
 	// TO DO: once auth is implemented, have spam protections like one new recipe submission every 10mins
 	return (
-		<div className="mb-4 mt-12 flex flex-col gap-4 border border-white bg-neutral-900 px-6 py-4">
+		<div className="mb-4 mt-12 flex flex-col gap-4 border border-neutral-400 bg-neutral-900 px-6 py-4">
 			<form>
 				<h2 className="text-2xl font-bold underline underline-offset-2">
 					CREATE A RECIPE

@@ -81,7 +81,7 @@ export function EditRecipe({
 	return (
 		<>
 			{recipe ? (
-				<div className="rounded-md border border-white py-4 px-6">
+				<div className=" border border-neutral-400 py-4 px-6">
 					<p className="mb-2">ID: {recipe.id}</p>
 
 					<div className="grid grid-cols-2 grid-rows-2">

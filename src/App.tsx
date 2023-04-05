@@ -31,6 +31,7 @@ function App() {
 		try {
 			const response = await axios.get(`${BACKEND}/explore`);
 			const data = response.data;
+			console.log(response);
 			setExploreRecipes(data.value);
 			console.log(data.value);
 			setLoading(false);
@@ -116,7 +117,7 @@ function App() {
 
 	return (
 		<div className="h-screen w-screen bg-neutral-900 text-white">
-			<div className="">
+			<div>
 				<Header changePage={(pageName) => handleChangePage(pageName)} />
 				<section className="w-screeen flex h-screen flex-col items-center justify-center">
 					{loading ? <Loading /> : <>{content}</>}

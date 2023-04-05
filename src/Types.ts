@@ -1,10 +1,12 @@
 export interface IRecipe {
 	name: string;
 	description: string;
+	macros: TMacro[] | null;
 	duration: number;
-	tags: Array<string>;
-	ingredients: Array<string>;
-	seasoning: Array<string>;
+	tags: string[];
+	ingredients: string[];
+	seasoning: string[];
+	instructions: string[] | null;
 }
 
 export interface IReceivedRecipe extends IRecipe {
@@ -19,3 +21,8 @@ export interface IExploreRecipes {
 }
 
 export type TPageState = "explore" | "create" | "edit";
+
+type TMacro = {
+	name: string;
+	value: number;
+};
