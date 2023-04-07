@@ -1,6 +1,7 @@
 import { IReceivedRecipe } from "../Types";
 import ChickenPhoto from "../assets/IMG_5591.jpg";
 import { useState } from "react";
+import { TMacro } from "../Types";
 
 interface IEditRecipe {
 	recipe: IReceivedRecipe | undefined;
@@ -29,19 +30,25 @@ export function EditRecipe({
 	const [editName, setEditName] = useState<string>("");
 	const [editDuration, setEditDuration] = useState<number>(0);
 	const [editDescription, setEditDescription] = useState<string>("");
+	const [editMacros, setEditMacros] = useState<TMacro[]>([
+		{ name: "macro", value: 0 },
+	]);
 	const [editTags, setEditTags] = useState<Array<string>>([""]);
 	const [editIngredients, setEditIngredients] = useState<Array<string>>([""]);
 	const [editSeasoning, setEditSeasoning] = useState<Array<string>>([""]);
+	const [editInstructions, setEditInstructions] = useState<Array<string>>([""]);
 
 	function handleEditSaved(id: string) {
 		const data: IReceivedRecipe = {
 			"id": id,
 			"name": editName,
 			"description": editDescription,
+			"macros": editMacros,
 			"duration": editDuration,
 			"tags": editTags,
 			"ingredients": editIngredients,
 			"seasoning": editSeasoning,
+			"instructions": editInstructions,
 		};
 		handleRecipeUpdate(data);
 		handleHideEditModal();

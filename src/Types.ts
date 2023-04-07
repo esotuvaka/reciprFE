@@ -1,12 +1,12 @@
 export interface IRecipe {
 	name: string;
 	description: string;
-	macros: TMacro[] | null;
+	macros: TMacro[];
 	duration: number;
 	tags: string[];
 	ingredients: string[];
 	seasoning: string[];
-	instructions: string[] | null;
+	instructions: string[];
 }
 
 export interface IReceivedRecipe extends IRecipe {

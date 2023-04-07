@@ -108,63 +108,93 @@ export function CreateRecipe({ createRecipeForm }: ICreateRecipe) {
 						onChange={(e) => handleStringToArray(e.target.value, "tags")}
 						className="mb-2 w-full border border-neutral-400 bg-black px-2 pb-1"
 						placeholder={
-							"Add up to 3 tags. These should be the cooking method, protein source, and diet restrictions (vegan, vegetarian, ...)"
+							"Add 3 tags. These should be the cooking method, protein source, and diet restrictions (vegan, vegetarian, ...)"
 						}
 					/>
 				</div>
 
-				<div className="flex gap-8  ">
-					<div className="flex h-min flex-col pt-6">
-						<label>
-							<p className="text-xl font-semibold">
-								INGREDIENTS<span className="text-xl text-red-500">* </span>
+				<div className="col-span-2">
+					<div className="flex flex-col">
+						<div className="flex w-full">
+							<div className="flex w-1/2 gap-8">
+								<div className="flex h-min flex-col ">
+									<label>
+										<p className="text-xl font-semibold">
+											INGREDIENTS
+											<span className="text-xl text-red-500">* </span>
+										</p>
+									</label>
+									<textarea
+										rows={12}
+										name="editIngredients"
+										id="editIngredients"
+										value={ingredients.join(", ")}
+										onChange={(e) =>
+											handleStringToArray(e.target.value, "ingredients")
+										}
+										className="w-full border border-neutral-400 bg-black  px-2"
+										placeholder={
+											"600g chicken, Tbsp garlic powder, Tbsp cumin, ..."
+										}
+									/>
+								</div>
+								<div className="flex h-min flex-col">
+									<label>
+										<p className="text-xl font-semibold">
+											SEASONING<span className="text-xl text-red-500">* </span>
+										</p>
+									</label>
+									<textarea
+										rows={12}
+										name="editSeasoning"
+										id="editSeasoning"
+										value={seasoning.join(", ")}
+										onChange={(e) =>
+											handleStringToArray(e.target.value, "seasoning")
+										}
+										className="w-full border border-neutral-400 bg-black  px-2"
+										placeholder={"cumin, garlic powder, oregano, ..."}
+									/>
+								</div>
+							</div>
+							<div className="w-1/2 px-6">
+								<label>
+									<h4 className="text-xl font-semibold">
+										INSTRUCTIONS<span className="text-xl text-red-500">* </span>
+									</h4>
+								</label>
+								<textarea
+									rows={12}
+									name="editInstructions"
+									id="editInstructions"
+									value={instructions.join(", ")}
+									onChange={(e) =>
+										handleStringToArray(e.target.value, "instructions")
+									}
+									className="mb-2 w-full border border-neutral-400 bg-black  px-2"
+									placeholder={
+										"1. Organize utensils and cookware, 2. Rinse ingredients if needed, 3. Begin cooking, 4. Enjoy!"
+									}
+								/>
+							</div>
+						</div>
+						<div className="mt-6 flex gap-4">
+							<button
+								onClick={() => handleSubmit()}
+								className="border border-neutral-400 px-4 py-2 font-bold transition-all duration-300 hover:border-white"
+							>
+								Create
+							</button>
+							{/* TO DO: make cancel button send user to explore page */}
+							<button className="border border-neutral-400 px-4 py-2 font-bold transition-all duration-300 hover:border-red-500">
+								Cancel
+							</button>
+							<p>
+								<span className="text-xl text-red-500">* </span>Separate with
+								commas and a space. e.g: chicken, rice, lemon
 							</p>
-						</label>
-						<textarea
-							rows={12}
-							name="editTags"
-							id="editTags"
-							value={tags.join(", ")}
-							onChange={(e) => handleStringToArray(e.target.value, "tags")}
-							className="mb-2 w-full border border-neutral-400 bg-black  px-2"
-							placeholder={"600g chicken, Tbsp garlic powder, Tbsp cumin, ..."}
-						/>
+						</div>
 					</div>
-					<div className="flex h-min flex-col pt-6">
-						<label>
-							<p className="text-xl font-semibold">
-								SEASONING<span className="text-xl text-red-500">* </span>
-							</p>
-						</label>
-						<textarea
-							rows={12}
-							name="editTags"
-							id="editTags"
-							value={tags.join(", ")}
-							onChange={(e) => handleStringToArray(e.target.value, "tags")}
-							className="mb-2 w-full border border-neutral-400 bg-black  px-2"
-							placeholder={"cumin, garlic powder, oregano, ..."}
-						/>
-					</div>
-				</div>
-
-				<div className="px-6 pt-6">
-					<label>
-						<h4 className="text-xl font-semibold">
-							INSTRUCTIONS<span className="text-xl text-red-500">* </span>
-						</h4>
-					</label>
-					<textarea
-						rows={12}
-						name="editTags"
-						id="editTags"
-						value={tags.join(", ")}
-						onChange={(e) => handleStringToArray(e.target.value, "tags")}
-						className="mb-2 w-full border border-neutral-400 bg-black  px-2"
-						placeholder={
-							"1. Organize utensils and cookware, 2. Rinse ingredients if needed, 3. Begin cooking, 4. Enjoy!"
-						}
-					/>
 				</div>
 			</div>
 		</div>

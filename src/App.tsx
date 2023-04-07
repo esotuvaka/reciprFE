@@ -1,15 +1,13 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
-import ChickenPhoto from "./assets/IMG_5591.jpg";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBookmark, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { Header } from "./components/ui/Header";
 import { IRecipe, IReceivedRecipe, IExploreRecipes, TPageState } from "./Types";
 import { CreateRecipe } from "./sections/CreateRecipe";
 import { Explore } from "./sections/Explore";
 import { Loading } from "./components/ui/Loading";
 import { EditRecipe } from "./sections/EditRecipe";
+import RecipeRepo from "./repositories/RecipeRepo";
 
 function App() {
 	const [exploreRecipes, setExploreRecipes] = useState<IExploreRecipes | "">(
@@ -22,22 +20,23 @@ function App() {
 	const [recipe, setRecipe] = useState<IReceivedRecipe>();
 
 	const BACKEND = import.meta.env.VITE_BACKEND_URL;
+	const recipeRepo = new RecipeRepo();
 
 	useEffect(() => {
-		fetchRecipes();
+		fetchExploreRecipes();
 	}, []);
 
-	async function fetchRecipes() {
-		try {
-			const response = await axios.get(`${BACKEND}/explore`);
-			const data = response.data;
-			console.log(response);
-			setExploreRecipes(data.value);
-			console.log(data.value);
-			setLoading(false);
-		} catch (error) {
-			console.error(error);
-		}
+	async function fetchExploreRecipes() {
+		const response = await recipeRepo.exploreRecipes();
+		setExploreRecipes(response);
+		setLoading(false);
+	}
+
+	// Create
+	async function handleCreateRecipe(newRecipeData: IRecipe) {
+		const response = await recipeRepo.sendRecipe(newRecipeData);
+		// setRecipe(response.data);
+		setActivePage("explore");
 	}
 
 	// Create
@@ -88,8 +87,8 @@ function App() {
 			.then((error) => console.log(error));
 	}
 
-	function handleRecipeSubmit(data: IRecipe) {
-		sendRecipe(data);
+	function handleChangePage(pageName: TPageState) {
+		setActivePage(pageName);
 	}
 
 	const PageNotFound = () => {
@@ -101,7 +100,7 @@ function App() {
 	if (activePage === "explore" && exploreRecipes !== "") {
 		content = <Explore exploreRecipes={exploreRecipes} />;
 	} else if (activePage === "create") {
-		content = <CreateRecipe createRecipeForm={handleRecipeSubmit} />;
+		content = <CreateRecipe createRecipeForm={handleCreateRecipe} />;
 	} else if (activePage === "edit") {
 		// TO DO: Update to pass errors props if the updateRecipe has invalid data
 		content = (
@@ -113,10 +112,6 @@ function App() {
 				handleRecipeDelete={(id) => deleteRecipe(id)}
 			/>
 		);
-	}
-
-	function handleChangePage(pageName: TPageState) {
-		setActivePage(pageName);
 	}
 
 	return (

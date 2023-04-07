@@ -19,6 +19,7 @@ export function Header({ changePage }: IHeader) {
 		changePage(pageName);
 		setActivePageLink(pageName);
 	}
+
 	return (
 		<header className="fixed top-0 w-full">
 			<div className="border-y border-neutral-400 bg-black">
