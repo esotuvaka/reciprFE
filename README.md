@@ -1,0 +1,20 @@
+# reciPR Frontend
+
+Frontend for reciPR, a meal prep recipe sharing web app. Create and Explore different recipes, filter by allergies / diet, and save your favorites in collections!
+
+---
+
+### Built using React, TypeScript, TailwindCSS
+
+---
+
+### Upcoming changes:
+
+- implement repository pattern for all API calls
+- ? create and use repository pattern for app state management (redux workaround)
+- implement auth
+- implement session trackers to prevent API spam (throttled to 1 call per x time interval)
+- implement form input validation
+- implement ability to like and save posts
+- implement profiles and editing collections of recipes
+- implement explore filter for diet / allergies
