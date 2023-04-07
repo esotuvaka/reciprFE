@@ -26,6 +26,7 @@ export function Explore({ exploreRecipes }: IExplore) {
 								setFocusedRecipe(recipe);
 							}}
 						>
+							<div className="bg-blue-500">{recipe.tags[0]}</div>
 							<div className="bg-gradient-to-t from-neutral-800 to-transparent py-4 px-4 pt-2">
 								<h3 className="mb-2 text-xl font-bold">{recipe.name}</h3>
 								<p className="text-xs">{recipe.id}</p>

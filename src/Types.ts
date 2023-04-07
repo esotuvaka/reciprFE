@@ -22,7 +22,7 @@ export interface IExploreRecipes {
 
 export type TPageState = "explore" | "create" | "edit";
 
-type TMacro = {
+export type TMacro = {
 	name: string;
 	value: number;
 };

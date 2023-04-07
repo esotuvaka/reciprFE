@@ -92,7 +92,11 @@ function App() {
 		sendRecipe(data);
 	}
 
-	let content;
+	const PageNotFound = () => {
+		return <div>Page not found!</div>;
+	};
+
+	let content = <PageNotFound />;
 
 	if (activePage === "explore" && exploreRecipes !== "") {
 		content = <Explore exploreRecipes={exploreRecipes} />;
