@@ -39,53 +39,59 @@ function App() {
 		setActivePage("explore");
 	}
 
-	// Create
-	function sendRecipe(createRecipeData: IRecipe) {
-		axios
-			.post(`${BACKEND}`, createRecipeData)
-			.then((response) => {
-				setRecipe(response.data);
-				setActivePage("edit");
-				console.log(response.data);
-			})
-			.catch((error) => console.log(error));
+	// Read
+	async function handleGetRecipe(id: string) {
+		const response = await recipeRepo.getRecipe(id);
+		// TO DO: once the recipe is received, set it to state and use somewhere
 	}
 
-	// Read
-	function getRecipe(id: string) {
-		axios
-			.get(`${BACKEND}/${id}`)
-			.then((response) => {
-				setRecipe(response.data);
-			})
-			.catch((error) => console.log(error));
-	}
+	// // Read
+	// function getRecipe(id: string) {
+	// 	axios
+	// 		.get(`${BACKEND}/${id}`)
+	// 		.then((response) => {
+	// 			setRecipe(response.data);
+	// 		})
+	// 		.catch((error) => console.log(error));
+	// }
 
 	// Upsert
-	function updateRecipe(recipeData: IReceivedRecipe) {
-		axios
-			.put(`${BACKEND}/${recipeData.id}`, recipeData, {
-				headers: {
-					"Content-Type": "application/json",
-				},
-			})
-			.then((response) => {
-				console.log("Successfully updated recipe: " + response.status);
-				console.log(response);
-			})
-			.catch((error) => console.log(error));
+	async function handleUpsertRecipe(recipe: IReceivedRecipe) {
+		const response = await recipeRepo.updateRecipe(recipe);
+		console.log(response);
 	}
 
+	// // Upsert
+	// function updateRecipe(recipeData: IReceivedRecipe) {
+	// 	axios
+	// 		.put(`${BACKEND}/${recipeData.id}`, recipeData, {
+	// 			headers: {
+	// 				"Content-Type": "application/json",
+	// 			},
+	// 		})
+	// 		.then((response) => {
+	// 			console.log("Successfully updated recipe: " + response.status);
+	// 			console.log(response);
+	// 		})
+	// 		.catch((error) => console.log(error));
+	// }
+
 	// Delete
-	function deleteRecipe(id: string) {
-		axios
-			.delete(`${BACKEND}/${id}`)
-			.then((response) => {
-				console.log("Successfully delete recipe: ");
-				console.log(response);
-			})
-			.then((error) => console.log(error));
+	async function handleDeleteRecipe(id: string) {
+		const response = await recipeRepo.deleteRecipe(id);
+		console.log(response);
 	}
+
+	// // Delete
+	// function deleteRecipe(id: string) {
+	// 	axios
+	// 		.delete(`${BACKEND}/${id}`)
+	// 		.then((response) => {
+	// 			console.log("Successfully delete recipe: ");
+	// 			console.log(response);
+	// 		})
+	// 		.then((error) => console.log(error));
+	// }
 
 	function handleChangePage(pageName: TPageState) {
 		setActivePage(pageName);
@@ -102,14 +108,20 @@ function App() {
 	} else if (activePage === "create") {
 		content = <CreateRecipe createRecipeForm={handleCreateRecipe} />;
 	} else if (activePage === "edit") {
-		// TO DO: Update to pass errors props if the updateRecipe has invalid data
+		// TO DO: update to pass errors props if the updateRecipe has invalid data
+		// TO DO: complete the change to using recipeHandlers once ability to click
+		//	on and target YOUR recipes is complete(after auth added)
 		content = (
 			<EditRecipe
 				recipe={recipe}
 				handleRecipeUpdate={(recipeData) => {
-					updateRecipe(recipeData);
+					// updateRecipe(recipeData);
+					handleUpsertRecipe(recipeData);
 				}}
-				handleRecipeDelete={(id) => deleteRecipe(id)}
+				handleRecipeDelete={(id) => {
+					// deleteRecipe(id);
+					handleDeleteRecipe(id);
+				}}
 			/>
 		);
 	}

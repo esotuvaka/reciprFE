@@ -10,6 +10,8 @@ Frontend for reciPR, a meal prep recipe sharing web app. Create and Explore diff
 
 ### Upcoming changes:
 
+- implement filtered API endpoints, e.g: "BACKEND/tags=chicken,air%20fryer&max_calories=500"
+- update createRecipe to also take macros
 - implement repository pattern for all API calls
 - ? create and use repository pattern for app state management (redux workaround)
 - implement auth

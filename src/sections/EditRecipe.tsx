@@ -31,7 +31,7 @@ export function EditRecipe({
 	const [editDuration, setEditDuration] = useState<number>(0);
 	const [editDescription, setEditDescription] = useState<string>("");
 	const [editMacros, setEditMacros] = useState<TMacro[]>([
-		{ name: "macro", value: 0 },
+		{ name: "", value: 0 },
 	]);
 	const [editTags, setEditTags] = useState<Array<string>>([""]);
 	const [editIngredients, setEditIngredients] = useState<Array<string>>([""]);
