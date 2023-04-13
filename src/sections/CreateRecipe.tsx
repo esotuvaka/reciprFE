@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { IRecipe, TMacro } from "../Types";
+import useDebounce from "../utils/hooks/useDebounce";
 
 interface ICreateRecipe {
 	createRecipeForm: (data: IRecipe) => void;
@@ -9,12 +10,19 @@ interface ICreateRecipe {
 export function CreateRecipe({ createRecipeForm }: ICreateRecipe) {
 	const [name, setName] = useState<string>("");
 	const [description, setDescription] = useState<string>("");
+	const [mString, setMString] = useState<string>("");
 	const [macros, setMacros] = useState<Array<TMacro>>([{ "": 0 }]);
 	const [duration, setDuration] = useState<number>(0);
 	const [tags, setTags] = useState<Array<string>>([""]);
 	const [ingredients, setIngredients] = useState<Array<string>>([""]);
 	const [seasoning, setSeasoning] = useState<Array<string>>([""]);
 	const [instructions, setInstructions] = useState<Array<string>>([""]);
+
+	const debouncedMacroString = useDebounce(mString, 500);
+
+	useEffect(() => {
+		parseMacroString(debouncedMacroString);
+	}, [debouncedMacroString]);
 
 	function handleSubmit() {
 		const formData: IRecipe = {
@@ -31,22 +39,18 @@ export function CreateRecipe({ createRecipeForm }: ICreateRecipe) {
 		createRecipeForm(formData);
 	}
 
-	function parseMacroString(macroString: string) {
-		const macros: { [name: string]: number } = {};
+	function parseMacroString(str: string) {
+		const keyValueArray: { [key: string]: number }[] = [];
 
-		// Split the input string by commas to get individual macros
-		const macroArray = macroString.split(",");
+		const lines = str.split(", ");
 
-		// Loop through each macro and format it into key:value pairs
-		for (const macro of macroArray) {
-			const keyValueArray = macro.split(":");
-			const key = keyValueArray[0].trim();
-			const value = Number(keyValueArray[1].trim());
+		lines.forEach((line) => {
+			const [key, value] = line.split(":");
 
-			macros[key] = value;
-		}
+			keyValueArray.push({ [key]: Number(value) });
+		});
 
-		console.log(macros);
+		console.log(keyValueArray);
 	}
 
 	function handleStringToArray(stringItems: string, arrayName: string) {
@@ -140,8 +144,10 @@ export function CreateRecipe({ createRecipeForm }: ICreateRecipe) {
 						name="editMacros"
 						id="editMacros"
 						// TO DO: Update value here to use macro information
-						value={tags.join(", ")}
-						onChange={(e) => parseMacroString(e.target.value)}
+						value={mString}
+						onChange={(e) => {
+							setMString(e.target.value);
+						}}
 						className="mb-2 w-full border border-neutral-400 bg-black px-2 pb-1"
 						placeholder={"Add macros (protein: 30, calories: 500, fat: 5)"}
 					/>
