@@ -1,7 +1,7 @@
 export interface IRecipe {
 	name: string;
 	description: string;
-	macros: TMacro[];
+	macros: TMacro[] | [];
 	duration: number;
 	tags: string[];
 	ingredients: string[];
@@ -23,6 +23,5 @@ export interface IExploreRecipes {
 export type TPageState = "explore" | "create" | "edit";
 
 export type TMacro = {
-	name: string;
-	value: number;
+	[key: string]: number;
 };

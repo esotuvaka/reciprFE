@@ -1,9 +1,16 @@
-import { IReceivedRecipe } from "../Types";
-import ChickenPhoto from "../assets/IMG_5591.jpg";
+import { IReceivedRecipe, TMacro } from "../Types";
 
 interface IViewRecipe {
-	recipe: IReceivedRecipe | undefined;
+	recipe: IReceivedRecipe;
 	handleExitClick: () => void;
+}
+
+function macroUnits(macroName: string) {
+	if (macroName === "protein" || macroName === "fat") {
+		return "g";
+	} else if (macroName === "calories") {
+		return "cals";
+	} else return;
 }
 
 export function ViewRecipe({ recipe, handleExitClick }: IViewRecipe) {
@@ -22,18 +29,36 @@ export function ViewRecipe({ recipe, handleExitClick }: IViewRecipe) {
 
 					<div className="grid grid-cols-2 grid-rows-2">
 						<div className="">
-							<div className="h-96 w-96 pl-6">
-								<img src={ChickenPhoto} />
-							</div>
+							<div className="h-96 w-96 bg-black pl-6"></div>
 						</div>
 						<div className="row-span-2 w-96 px-6">
 							<p className="mb-2">ID: {recipe.id}</p>
 							<h2 className="text-2xl font-bold">{recipe.name}</h2>
 							<p className="mb-2">Prep Time: {recipe.duration} Minutes</p>
-							<h3 className="mb-4 text-xl font-semibold">
-								{recipe.description}
-							</h3>
-							<ul className="mb-4 flex flex-wrap gap-1">
+							{recipe.macros ? (
+								<div className="flex gap-1">
+									{recipe.macros.map((macro, i) => (
+										<div key={i} className="">
+											{Object.entries(macro).map(([key, value], i) => (
+												<div
+													key={i}
+													className="mb-1 flex w-min gap-x-1 rounded-md border border-orange-400 py-1 px-2"
+												>
+													<p className="">{key}: </p>
+													<div className="flex">
+														<p>{value}</p>
+														{macroUnits(key)}
+													</div>
+												</div>
+											))}
+										</div>
+									))}
+								</div>
+							) : (
+								<></>
+							)}
+
+							<ul className="my-2 flex flex-wrap gap-1">
 								{recipe.tags.map((tag, i) => (
 									<li
 										key={i}
@@ -43,12 +68,21 @@ export function ViewRecipe({ recipe, handleExitClick }: IViewRecipe) {
 									</li>
 								))}
 							</ul>
-							<h4 className="text-lg font-bold">Instructions:</h4>
-							<p className="whitespace-wrap">1. Organize ingredients</p>
-							<p className="whitespace-wrap">2. Prepare ingredients</p>
-							<p className="whitespace-wrap">3. Mix seasonings</p>
-							<p className="whitespace-wrap">4. Cook food</p>
-							<p className="whitespace-wrap">5. Eat!</p>
+							<h3 className="mb-4 text-xl font-semibold">
+								{recipe.description}
+							</h3>
+							{recipe.instructions ? (
+								<ol className="">
+									{recipe.instructions.map((step, i) => (
+										<li key={i} className="flex gap-x-1">
+											<p className="">{i + 1}:</p>
+											<p>{step}</p>
+										</li>
+									))}
+								</ol>
+							) : (
+								<></>
+							)}
 						</div>
 
 						<div className="flex gap-8 p-6">

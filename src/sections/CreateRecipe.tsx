@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 
 import { IRecipe, TMacro } from "../Types";
 
@@ -9,7 +9,7 @@ interface ICreateRecipe {
 export function CreateRecipe({ createRecipeForm }: ICreateRecipe) {
 	const [name, setName] = useState<string>("");
 	const [description, setDescription] = useState<string>("");
-	const [macros, setMacros] = useState<Array<TMacro>>([{ name: "", value: 0 }]);
+	const [macros, setMacros] = useState<Array<TMacro>>([{ "": 0 }]);
 	const [duration, setDuration] = useState<number>(0);
 	const [tags, setTags] = useState<Array<string>>([""]);
 	const [ingredients, setIngredients] = useState<Array<string>>([""]);
@@ -32,16 +32,21 @@ export function CreateRecipe({ createRecipeForm }: ICreateRecipe) {
 	}
 
 	function parseMacroString(macroString: string) {
-		const macrosArr = macroString.split(",").map((m) => {
-			const [name, value] = m.split(":").map((item) => item.trim());
-			const parsedValue = parseInt(value, 10);
+		const macros: { [name: string]: number } = {};
 
-			return {
-				name,
-				value: parsedValue,
-			};
-		});
-		setMacros(macrosArr);
+		// Split the input string by commas to get individual macros
+		const macroArray = macroString.split(",");
+
+		// Loop through each macro and format it into key:value pairs
+		for (const macro of macroArray) {
+			const keyValueArray = macro.split(":");
+			const key = keyValueArray[0].trim();
+			const value = Number(keyValueArray[1].trim());
+
+			macros[key] = value;
+		}
+
+		console.log(macros);
 	}
 
 	function handleStringToArray(stringItems: string, arrayName: string) {
