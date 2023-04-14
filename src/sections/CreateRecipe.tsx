@@ -42,15 +42,15 @@ export function CreateRecipe({ createRecipeForm }: ICreateRecipe) {
 	function parseMacroString(str: string) {
 		const keyValueArray: { [key: string]: number }[] = [];
 
-		const lines = str.split(", ");
+		const macroItem = str.split(", ");
 
-		lines.forEach((line) => {
-			const [key, value] = line.split(":");
+		macroItem.forEach((macro) => {
+			const [key, value] = macro.split(":");
 
 			keyValueArray.push({ [key]: Number(value) });
 		});
 
-		console.log(keyValueArray);
+		setMacros(keyValueArray);
 	}
 
 	function handleStringToArray(stringItems: string, arrayName: string) {
