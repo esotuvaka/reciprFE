@@ -1,8 +1,8 @@
 import { IReceivedRecipe, TMacro } from "../Types";
 
 interface IViewRecipe {
-	recipe: IReceivedRecipe;
-	handleExitClick: () => void;
+	recipe: IReceivedRecipe | undefined;
+	handleExitClick?: () => void;
 }
 
 function macroUnits(macroName: string) {

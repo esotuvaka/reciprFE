@@ -20,7 +20,7 @@ export interface IExploreRecipes {
 	value: IReceivedRecipe[];
 }
 
-export type TPageState = "explore" | "create" | "edit";
+export type TPageState = "explore" | "create" | "edit" | "view";
 
 export type TMacro = {
 	[key: string]: number;
