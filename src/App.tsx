@@ -14,12 +14,9 @@ function App() {
 		""
 	);
 	const [loading, setLoading] = useState<boolean>(true);
-
 	const [activePage, setActivePage] = useState<TPageState>("explore");
-
 	const [recipe, setRecipe] = useState<IReceivedRecipe>();
 
-	const BACKEND = import.meta.env.VITE_BACKEND_URL;
 	const recipeRepo = new RecipeRepo();
 
 	useEffect(() => {
@@ -45,53 +42,17 @@ function App() {
 		// TO DO: once the recipe is received, set it to state and use somewhere
 	}
 
-	// // Read
-	// function getRecipe(id: string) {
-	// 	axios
-	// 		.get(`${BACKEND}/${id}`)
-	// 		.then((response) => {
-	// 			setRecipe(response.data);
-	// 		})
-	// 		.catch((error) => console.log(error));
-	// }
-
 	// Upsert
 	async function handleUpsertRecipe(recipe: IReceivedRecipe) {
 		const response = await recipeRepo.updateRecipe(recipe);
 		console.log(response);
 	}
 
-	// // Upsert
-	// function updateRecipe(recipeData: IReceivedRecipe) {
-	// 	axios
-	// 		.put(`${BACKEND}/${recipeData.id}`, recipeData, {
-	// 			headers: {
-	// 				"Content-Type": "application/json",
-	// 			},
-	// 		})
-	// 		.then((response) => {
-	// 			console.log("Successfully updated recipe: " + response.status);
-	// 			console.log(response);
-	// 		})
-	// 		.catch((error) => console.log(error));
-	// }
-
 	// Delete
 	async function handleDeleteRecipe(id: string) {
 		const response = await recipeRepo.deleteRecipe(id);
 		console.log(response);
 	}
-
-	// // Delete
-	// function deleteRecipe(id: string) {
-	// 	axios
-	// 		.delete(`${BACKEND}/${id}`)
-	// 		.then((response) => {
-	// 			console.log("Successfully delete recipe: ");
-	// 			console.log(response);
-	// 		})
-	// 		.then((error) => console.log(error));
-	// }
 
 	function handleChangePage(pageName: TPageState) {
 		setActivePage(pageName);
