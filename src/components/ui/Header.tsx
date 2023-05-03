@@ -11,10 +11,11 @@ import useDebounce from "../../utils/hooks/useDebounce";
 interface IHeader {
 	changePage: (pageName: TPageState) => void;
 	getById: (id: string) => void;
+	getByTags: (tags: string) => void;
 }
 
 // TO DO: Add a callback function that updates app state of the current page (Explore, Create, Manage, etc.)
-export function Header({ changePage, getById }: IHeader) {
+export function Header({ changePage, getById, getByTags }: IHeader) {
 	const [activePageLink, setActivePageLink] = useState<TPageState>("explore");
 	const [input, setInput] = useState<string>("");
 
@@ -24,24 +25,37 @@ export function Header({ changePage, getById }: IHeader) {
 		handleDynamicInput(debouncedSearchInput);
 	}, [debouncedSearchInput]);
 
-	// use a listener function, that once the inputted id string reaches the length of Guid,
-	//	debounce and fetch it
 	function handleDynamicInput(input: string) {
-		// Guids have length of 36
 		const inputLength = input.length;
 
-		function isGuidinator3000(potentialGuid: string): boolean {
+		function isGuid(potentialGuid: string): boolean {
 			const validGuidFormat =
 				/^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/i;
 
 			return validGuidFormat.test(potentialGuid);
 		}
 
-		const isValidGuid = isGuidinator3000(input);
+		function isTagFiltered(potentialFilter: string) {
+			let isTagFilter: boolean;
+			potentialFilter.includes("tag: ")
+				? (isTagFilter = true)
+				: (isTagFilter = false);
+			return isTagFilter;
+		}
 
 		if (inputLength === 0) {
 			changePage("explore");
-		} else if (inputLength === 36 && isValidGuid) {
+		} else if (inputLength > 0 && isTagFiltered(input)) {
+			// "tag: " has length 4.
+			if (inputLength > 5) {
+				const splitInput = input.replace(/tag: /g, "").replace(/\s/g, "");
+				const quoteInput = '"' + splitInput + '"';
+				if (quoteInput.length > 2) {
+					getByTags(splitInput);
+					console.log("TAGs DETECTED", quoteInput);
+				}
+			}
+		} else if (inputLength === 36 && isGuid(input)) {
 			getById(input.toUpperCase());
 			console.log("GUID DETECTED");
 		}

@@ -16,6 +16,18 @@ class RecipeRepo {
 		}
 	}
 
+	async getTaggedRecipes(tags: string): Promise<IExploreRecipes> {
+		try {
+			const response = await axios.get(`${BACKEND}/explore?tags=${tags}`);
+			const data = response.data.value;
+			console.log(data);
+			return data;
+		} catch (error) {
+			console.error(error);
+			throw new Error("Failed to fetch filtered EXPLORE recipes");
+		}
+	}
+
 	async sendRecipe(newRecipeData: IRecipe) {
 		try {
 			const response = await axios.post(`${BACKEND}`, newRecipeData);

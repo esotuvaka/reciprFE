@@ -29,6 +29,12 @@ function App() {
 		setLoading(false);
 	}
 
+	async function handleGetTaggedRecipes(tags: string) {
+		const response = await recipeRepo.getTaggedRecipes(tags);
+		setExploreRecipes(response);
+		setLoading(false);
+	}
+
 	// Create
 	async function handleCreateRecipe(newRecipeData: IRecipe) {
 		const response = await recipeRepo.sendRecipe(newRecipeData);
@@ -101,6 +107,7 @@ function App() {
 				<Header
 					changePage={(pageName) => handleChangePage(pageName)}
 					getById={(id) => handleGetRecipe(id)}
+					getByTags={(tags) => handleGetTaggedRecipes(tags)}
 				/>
 				<section className="w-screeen flex h-screen flex-col items-center justify-center">
 					{loading ? <Loading /> : <>{content}</>}
